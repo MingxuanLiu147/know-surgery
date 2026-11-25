@@ -1,19 +1,30 @@
 ---
 name: inspect-repo
-description: List the source checkout's entrypoints, registered models, datasets, trainers, recipes and skills before choosing or extending a workflow.
+description: "选择或扩展知识更新工作流前，盘点模型、数据集、Trainer、配方和 Skills。"
 ---
 
-# Inspect Repo
+# 仓库能力盘点
 
-Run `python .claude/skills/inspect-repo/scripts/run.py --output <inventory.json>`.
-Without `--output`, the inventory is written to
-`artifacts/inspect-repo/repo_inventory.json`.
+## 输入
 
-Use the registry IDs in this output when creating a plan. Inspect the matching
-`configs/` files and implementation when a combination is uncertain. Inventory
-counts describe configuration coverage; they do not prove a model run succeeded.
-Do not modify source or existing run outputs while taking inventory.
+当前仓库源码；目标操作或待查组件。
 
-For output conventions and evidence labels, see
-[artifact layout](../_shared/references/artifact-layout.md) and
-[evidence levels](../_shared/references/evidence-levels.md).
+## 流程
+
+在仓库根目录运行（占位符替换为真实值）：
+
+```bash
+python .claude/skills/inspect-repo/scripts/run.py --output artifacts/TASK/inventory.json
+```
+
+1. 执行盘点命令，获取已注册组件 ID 和配方。
+2. 按 operation、modality、model、dataset、method 筛选相关条目。
+3. 读取匹配的 `configs/` 和实现，核对方法资产、配置约束及已有证据。
+4. 有精确配方时优先复用；没有时明确适配缺口，不猜测组件 ID。
+
+## 完成标准
+
+- 交付清单及可复用组件、限制。
+- 注册或存在配置不等于已成功运行；盘点不修改源码或运行产物。
+
+遵循[公共工作约定](../_shared/references/workflow.md)。

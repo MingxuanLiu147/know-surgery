@@ -1,4 +1,4 @@
 interface:
-  display_name: "Batch Sweep"
-  short_description: "Expand compatible method-model-seed runs without duplicate work."
-  default_prompt: "Use $batch-sweep to build a compatible and auditable experiment matrix."
+  display_name: "展开批量实验计划"
+  short_description: "将方法与随机种子展开为待运行实验命令；用于批量配置与复现规划，不负责调度。"
+  default_prompt: "使用 $batch-sweep 按当前仓库接口完成我指定的展开批量实验计划任务。"

@@ -1,21 +1,30 @@
 ---
 name: debug-ui
-description: Check a running Know-Surgery backend health endpoint and guide focused UI/CLI behavior checks after interface changes.
+description: "检查 Know-Surgery 后端健康状态；用于定位 UI 问题并按需验证界面与 CLI 一致性。"
 ---
 
-# Debug Ui
+# 检查 WebUI 后端与行为
 
-Run `python .claude/skills/debug-ui/scripts/run.py --url http://127.0.0.1:7860 --output <health.json>`.
-Use the actual backend URL; the helper requests `/api/v1/health`. It reports HTTP
-health only, not browser usability or successful model execution.
+## 输入
 
-For a UI change, additionally exercise the affected control and compare the
-exported command with the CLI preview. Check language, validation messages and
-result rendering where relevant. Do not launch training just to check layout.
-Keep provider keys out of logs, browser exports and reports.
+实际后端 URL；待检查的功能及日志。
 
-Output defaults to `artifacts/debug-ui/health.json`.
+## 流程
 
-For output conventions and evidence labels, see
-[artifact layout](../_shared/references/artifact-layout.md) and
-[evidence levels](../_shared/references/evidence-levels.md).
+在仓库根目录运行（占位符替换为真实值）：
+
+```bash
+python .claude/skills/debug-ui/scripts/run.py --url http://127.0.0.1:17860 --output artifacts/TASK/health.json
+```
+
+1. 确认实际后端地址和服务状态，不假定默认端口一定有效。
+2. 运行健康检查，读取 `/api/v1/health` 响应和错误。
+3. 如需 UI 验证，操作受影响控件，核对导出命令与 CLI 预览、语言、校验及结果渲染。
+4. 仅在用户授权和任务需要时运行模型；不为检查布局启动训练。
+
+## 完成标准
+
+- 交付健康报告及实际检查的功能、问题证据。
+- HTTP 健康不等于浏览器、上传、训练或全部交互已通过；隐藏 provider 密钥。
+
+遵循[公共工作约定](../_shared/references/workflow.md)。

@@ -1,4 +1,4 @@
 interface:
-  display_name: "Aggregate Results"
-  short_description: "Validate and aggregate machine-readable run artifacts safely."
-  default_prompt: "Use $aggregate-results to aggregate these completed Know-Surgery runs."
+  display_name: "汇总实验结果"
+  short_description: "收集已有运行目录的机器可读指标并保留来源；用于结果整理，不推断缺失数据。"
+  default_prompt: "使用 $aggregate-results 按当前仓库接口完成我指定的汇总实验结果任务。"

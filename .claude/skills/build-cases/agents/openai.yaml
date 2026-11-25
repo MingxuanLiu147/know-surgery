@@ -1,4 +1,4 @@
 interface:
-  display_name: "Build Cases"
-  short_description: "Build algorithm-ready cases and side-effect evaluation probes."
-  default_prompt: "Use $build-cases to create runnable cases and evaluation probes from normalized data."
+  display_name: "构建实验案例"
+  short_description: "将已规范化知识转换为注入、编辑或遗忘案例，并检查已有评价探针的覆盖。"
+  default_prompt: "使用 $build-cases 按当前仓库接口完成我指定的构建实验案例任务。"

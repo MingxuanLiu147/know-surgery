@@ -1,4 +1,4 @@
 interface:
-  display_name: "Add Model"
-  short_description: "Register a model config and prepare compatibility smoke checks."
-  default_prompt: "Use $add-model to add a model to Know-Surgery with auditable checks."
+  display_name: "接入模型配置"
+  short_description: "接入或校验本地/Hugging Face 模型，使其可被 Know-Surgery 公共配置选择。"
+  default_prompt: "使用 $add-model 按当前仓库接口完成我指定的接入模型配置任务。"

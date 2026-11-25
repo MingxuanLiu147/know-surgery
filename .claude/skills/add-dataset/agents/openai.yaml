@@ -1,4 +1,4 @@
 interface:
-  display_name: "Add Dataset"
-  short_description: "Register a dataset with provenance, schema, and fixtures."
-  default_prompt: "Use $add-dataset to add a dataset through the canonical Know-Surgery contract."
+  display_name: "接入数据集"
+  short_description: "将自定义数据集接入现有数据契约、配置和公共 CLI；支持复用已有适配器。"
+  default_prompt: "使用 $add-dataset 按当前仓库接口完成我指定的接入数据集任务。"
