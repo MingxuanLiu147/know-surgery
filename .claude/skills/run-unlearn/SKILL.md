@@ -1,28 +1,30 @@
 ---
 name: run-unlearn
-description: Preview or execute an unlearning plan with explicit forget and retain inputs through the unified surgery entrypoint.
+description: "预览、预检或执行已注册的机器遗忘计划，同时检查遗忘与保留效果。"
 ---
 
-# Run Unlearn
+# 运行机器遗忘
 
-Preview with `python .claude/skills/run-unlearn/scripts/run.py --plan <plan.json>`.
-The plan must use `operation=unlearning`. Optional arguments are `--method <id>`,
-`--output <trace.json>`, `--timeout <seconds>` and `--cuda <id>`.
+## 输入
 
-Check that forget and retain scopes are disjoint and the intended loss, checkpoint
-and evaluation are composed. Add `--execute` only for an authorized run; CPU paths
-do not require a CUDA argument.
+operation=unlearning 的计划；forget/retain、初始 checkpoint、方法与预算。
 
-First use `--preflight` and have the user check the current model, layer/method
-settings, forget/retain data and budget. Pass their explicit confirmation as
-`--execute --reviewed-config METHOD=HASH`. Never auto-confirm a report; changing
-the configuration or inputs requires another review.
+## 流程
 
-Output defaults to `artifacts/run-unlearn/trace.json`; model artifacts follow the
-resolved Hydra directory. Examine forget efficacy and retained utility together.
-Reduced answer quality is not a guarantee of complete knowledge removal. Missing
-retention measurements must remain unavailable.
+在仓库根目录运行（占位符替换为真实值）：
 
-For output conventions and evidence labels, see
-[artifact layout](../_shared/references/artifact-layout.md) and
-[evidence levels](../_shared/references/evidence-levels.md).
+```bash
+python .claude/skills/run-unlearn/scripts/run.py --plan PLAN --output artifacts/TASK/unlearn_trace.json
+```
+
+1. 核对初始 checkpoint、forget/retain 角色、重叠情况以及方法损失和评价配置。
+2. 运行预览，追加 `--preflight` 检查同一配置；记录阻塞原因和 review_hash。
+3. 按[执行流程](../_shared/references/execution.md)在授权范围执行；输入变化后重新预检。
+4. 核查实际训练与遗忘/保持评价；区分数据缺失、评价未执行、低分与程序错误。
+
+## 完成标准
+
+- 交付轨迹、配置和实际遗忘/保留指标或明确缺失。
+- 回答质量降低不能证明知识完全删除；不把未测保持能力视为正常。
+
+遵循[公共工作约定](../_shared/references/workflow.md)。

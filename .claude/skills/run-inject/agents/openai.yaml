@@ -1,4 +1,4 @@
 interface:
-  display_name: "Run Injection"
-  short_description: "Preview and execute knowledge injection through the unified CLI."
-  default_prompt: "Use $run-inject to preview and run this knowledge injection plan."
+  display_name: "运行知识注入"
+  short_description: "预览、预检或执行已注册的知识注入计划；检查目标、泛化和保持能力。"
+  default_prompt: "使用 $run-inject 按当前仓库接口完成我指定的运行知识注入任务。"

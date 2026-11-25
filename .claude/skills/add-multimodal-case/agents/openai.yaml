@@ -1,4 +1,4 @@
 interface:
-  display_name: "Add Multimodal Case"
-  short_description: "Validate and register aligned image-text surgery cases."
-  default_prompt: "Use $add-multimodal-case to prepare an auditable image-text knowledge case."
+  display_name: "校验多模态案例"
+  short_description: "为多模态知识更新检查本地 JSON/JSONL 引用图片，并准备相应模型输入。"
+  default_prompt: "使用 $add-multimodal-case 按当前仓库接口完成我指定的校验多模态案例任务。"

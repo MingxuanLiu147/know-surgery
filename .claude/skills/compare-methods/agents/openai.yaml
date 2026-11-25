@@ -1,4 +1,4 @@
 interface:
-  display_name: "Compare Methods"
-  short_description: "Gate fair comparisons and generate tables and plots."
-  default_prompt: "Use $compare-methods to compare these methods under one evidence contract."
+  display_name: "比较方法与实验条件"
+  short_description: "比较 Know-Surgery 已有运行的指标与实验条件；用于方法对照、检查模型或数据是否一致，以及判断结果能否公平比较。"
+  default_prompt: "使用 $compare-methods 按当前仓库接口完成我指定的比较方法与实验条件任务。"

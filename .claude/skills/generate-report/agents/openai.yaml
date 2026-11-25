@@ -1,4 +1,4 @@
 interface:
-  display_name: "Generate Report"
-  short_description: "Render existing run evidence into Markdown and JSON reports."
-  default_prompt: "Use $generate-report to produce a reproducible report from these run artifacts."
+  display_name: "生成可审查报告"
+  short_description: "从已有汇总、比较或轨迹 JSON 生成 Markdown/JSON 报告，不虚构实验分析。"
+  default_prompt: "使用 $generate-report 按当前仓库接口完成我指定的生成可审查报告任务。"

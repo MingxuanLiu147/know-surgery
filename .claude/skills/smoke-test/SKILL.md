@@ -1,28 +1,30 @@
 ---
 name: smoke-test
-description: Compose a plan and optionally run at most two cases to check data, model loading and output creation before a larger execution.
+description: "验证已规划的操作能否组合配置并可选执行极小规模模型任务；用于扩大实验前。"
 ---
 
-# Smoke Test
+# 最小冒烟验证
 
-Run `python .claude/skills/smoke-test/scripts/run.py --plan <plan.json>` for
-configuration-only validation. Optionally select `--method <id>`, `--output
-<trace.json>` and `--timeout <seconds>`.
+## 输入
 
-Inspect every resolved job. For an authorized bounded model run, add `--execute`
-and optionally `--cuda <id>`. The helper limits a copy of the plan to two cases;
-it does not authorize or launch the full matrix.
+合法 plan、选定方法、本地输入和受限运行授权（如执行）。
 
-Use `--preflight` to inspect the exact bounded smoke configuration (including
-the two-case limit and one training step where applicable). After the user checks
-layers, method settings and inputs, execute with
-`--execute --reviewed-config METHOD=HASH`. A full-run review does not authorize a
-different smoke configuration, or vice versa; do not generate consent automatically.
+## 流程
 
-Output defaults to `artifacts/smoke-test/trace.json`. Read input counts, generated
-files and failure messages. Compose evidence is `configured`; successful real
-smoke evidence is `verified_smoke`, not a full-dataset result.
+在仓库根目录运行（占位符替换为真实值）：
 
-For output conventions and evidence labels, see
-[artifact layout](../_shared/references/artifact-layout.md) and
-[evidence levels](../_shared/references/evidence-levels.md).
+```bash
+python .claude/skills/smoke-test/scripts/run.py --plan PLAN --output artifacts/TASK/smoke_trace.json
+```
+
+1. 使用独立输出路径；当前 helper 限制最多2条案例，注入/遗忘限制1个训练步。
+2. 运行预览并追加 `--preflight` 检查实际有界配置；完整计划的 hash 不可用于另一份冒烟配置。
+3. 按[执行流程](../_shared/references/execution.md)使用对应方法 hash 执行；需要2步等不同预算时走受限正常 CLI/运行入口。
+4. 检查真实样本数、步数、模型加载、产物及失败原因，标明验证覆盖范围。
+
+## 完成标准
+
+- 交付轨迹与验证证据；配置组合标 `configured`，真实有界验证按证据标 `verified_smoke`。
+- 不将冒烟运行报告为完整基准结果，不启动整个实验矩阵。
+
+遵循[公共工作约定](../_shared/references/workflow.md)。

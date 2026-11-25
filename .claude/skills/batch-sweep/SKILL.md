@@ -1,24 +1,30 @@
 ---
 name: batch-sweep
-description: Expand a plan into reproducible method-by-seed commands with separate output task names; this skill does not execute the matrix.
+description: "将方法与随机种子展开为待运行实验命令；用于批量配置与复现规划，不负责调度。"
 ---
 
-# Batch Sweep
+# 展开批量实验计划
 
-Run `python .claude/skills/batch-sweep/scripts/run.py --plan <plan.json> --seeds 42,43,44 --output <sweep.json>`.
-The helper validates registered components, deduplicates repeated seeds and writes
-one pending command per method/seed with a reproducibility hash. Different seeds
-receive different task names and explicit output directories, including
-multimodal routes. It does not inspect prior results or mark runs done.
+## 输入
 
-Review compatibility, input identity and total cost. Perform a representative
-compose and bounded model check before executing a large matrix. Execution uses
-the normal run path and requires the user's authorization; no cluster jobs are
-submitted by this helper.
+合法 plan、种子列表、输出路径和总体预算。
 
-Output defaults to `artifacts/batch-sweep/sweep_manifest.json`. Preserve failed
-and incomplete runs when comparing results.
+## 流程
 
-For output conventions and evidence labels, see
-[artifact layout](../_shared/references/artifact-layout.md) and
-[evidence levels](../_shared/references/evidence-levels.md).
+在仓库根目录运行（占位符替换为真实值）：
+
+```bash
+python .claude/skills/batch-sweep/scripts/run.py --plan PLAN --seeds 42,43,44 --output artifacts/TASK/sweep.json
+```
+
+1. 核对计划组件、方法列表、输入一致性和预算；种子去重。
+2. 生成 sweep manifest，逐项核对方法×种子、独立任务名、命令及哈希。
+3. 检查有效样本、更新预算、输出目录是否冲突；代表性任务先完成预检/冒烟。
+4. 仅在已有授权后通过正常执行入口调度实际运行；保留失败和未完成项。
+
+## 完成标准
+
+- 交付待运行命令清单及配置差异/成本说明。
+- 生成 pending 命令不等于完成实验；脚本不提交集群作业。
+
+遵循[公共工作约定](../_shared/references/workflow.md)。

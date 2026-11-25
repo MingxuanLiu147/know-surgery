@@ -1169,6 +1169,19 @@ def _plan_command(plan: dict[str, Any], method: str, *, preview: bool) -> list[s
             raise ValueError(f"Unsafe override value for {key}")
         encoded = _encode_hydra_override(value)
         command.append(f"{key}={encoded}")
+    if inputs and modality == "text":
+        from surgery import _compose_config
+
+        # A recipe may customize its original dataset outside the defaults list.
+        # Switching the dataset group leaves those fields behind. Bound custom
+        # inputs must load only their canonical adapter, while retaining the
+        # recipe's model, method and evaluation settings.
+        bound_config, _ = _compose_config(command[2:])
+        for role in inputs:
+            selected = "Canonical_inject" if role == "train" else f"Canonical_{role}"
+            for dataset_name in bound_config.get("data", {}).get(role, {}):
+                if dataset_name != selected:
+                    command.append(f"~data.{role}.{dataset_name}")
     if preview:
         command.extend(["--cfg", "job"])
     return command

@@ -1,35 +1,31 @@
 ---
 name: run-inject
-description: Preview or execute a registered knowledge injection plan through the unified surgery entrypoint.
+description: "预览、预检或执行已注册的知识注入计划；检查目标、泛化和保持能力。"
 ---
 
-# Run Inject
+# 运行知识注入
 
-Preview with `python .claude/skills/run-inject/scripts/run.py --plan <plan.json>`.
-The plan must use `operation=inject`. Optional arguments are `--method <id>`,
-`--output <trace.json>`, `--timeout <seconds>` and `--cuda <id>`.
+## 输入
 
-Inspect the training data, model, adapter, sample budget and retention evaluation.
-Image-text plans use `modality=multimodal`, `inject/MM_LoRA`, and the canonical
-multimodal data route; bound train cases become `data.train_path`. Text defaults
-are unchanged. Check target and retain probe availability in the actual output;
-training completion alone does not establish retention. For image-text plans,
-`overrides.data.retain_path` may point to a separate local probe file; the runtime
-records the consumed input hashes. Training-set before/after probes are bounded
-diagnostics, not a held-out benchmark.
-Add `--execute` only when the user's request authorizes execution; a CUDA argument
-is optional. Check local resource availability before a model run.
+operation=inject 的计划；指定方法、数据、模型、设备及预算。
 
-First use `--preflight` and have the user check the current model, adapter/layer
-settings, training budget and inputs. Pass their explicit confirmation as
-`--execute --reviewed-config METHOD=HASH`. Never auto-confirm a report; changing
-the configuration or inputs requires another review.
+## 流程
 
-Output defaults to `artifacts/run-inject/trace.json`; training artifacts follow
-the resolved Hydra directory. Report target improvement and retention separately,
-and preserve missing metrics as missing. A successful exit alone is not a
-completed evaluation.
+在仓库根目录运行（占位符替换为真实值）：
 
-For output conventions and evidence labels, see
-[artifact layout](../_shared/references/artifact-layout.md) and
-[evidence levels](../_shared/references/evidence-levels.md).
+```bash
+python .claude/skills/run-inject/scripts/run.py --plan PLAN --output artifacts/TASK/inject_trace.json
+```
+
+1. 核对实际配方、模型、训练输入、适配器与预算；图文任务使用 `modality=multimodal`，绑定案例进入 `data.train_path`，独立保持探针通过计划的 `overrides.data.retain_path` 指定。
+2. 运行预览；对同一参数追加 `--preflight`，检查结果与 review_hash。
+3. 检查实际评价入口和数据：目标、泛化及保持能力（WikiDYK 的 locality/reference 等）；不要以计划 evaluator 名称代替评价配置。
+4. 按[执行流程](../_shared/references/execution.md)完成授权与执行；可按需指定 `--method`、`--cuda`、`--timeout`。
+5. 检查实际训练步数、输入范围、保存目录及评价结果；独立评价集与训练集诊断分开。
+
+## 完成标准
+
+- 交付真实状态、配置、轨迹及已产生的目标/副作用指标。
+- 缺失指标标为不可用；仅预览或退出0不得当作有效实验结果。
+
+遵循[公共工作约定](../_shared/references/workflow.md)。
