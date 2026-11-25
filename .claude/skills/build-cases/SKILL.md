@@ -1,30 +1,33 @@
 ---
 name: build-cases
-description: "将已规范化知识转换为注入、编辑或遗忘案例，并检查已有评价探针的覆盖。"
+description: "Convert normalized records into editing, injection, or forget and retain cases and count the evaluation probes supplied with them."
 ---
 
-# 构建实验案例
+# Build cases for a knowledge update
 
-## 输入
+## Inputs
 
-规范化 JSONL；同一 operation；已有目标、改写和副作用探针。
+Normalized JSONL for one operation, including targets, roles, and any supplied paraphrases or
+side-effect probes.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
-python .claude/skills/build-cases/scripts/run.py --input NORMALIZED --operation edit --output artifacts/TASK/cases.jsonl
+python .claude/skills/build-cases/scripts/run.py --input NORMALIZED --operation edit \
+  --output artifacts/TASK/cases.jsonl
 ```
 
-1. 核对操作、记录角色与目标字段；遗忘需独立 forget 和 retain 记录。
-2. 运行案例构建；读取输出及 `.manifest.json`，遗忘检查 `.forget.jsonl` 与 `.retain.jsonl`。
-3. 检查记录数、来源以及 rephrase、locality、portability 等已有探针；报告缺失。
-4. 将通过检查的案例交给 `plan-surgery --cases PATH` 绑定输入。
+1. Use the same operation as in normalization. Check the targets and roles. Unlearning requires
+   separate, nonempty forget and retain sets.
+2. Read the case file and its `.manifest.json`. Check record counts, provenance, and coverage
+   for rephrase, locality, and portability probes. For unlearning, also inspect `.forget.jsonl`
+   and `.retain.jsonl`.
+3. Give the case file to `plan-surgery` with `--cases PATH` to bind the inputs. Carry missing
+   probes forward as missing measurements.
 
-## 完成标准
+## Completion criteria
 
-- 交付案例文件、清单与探针覆盖信息。
-- 脚本不会生成缺失问答；不得把缺失的副作用评价视为满分。
+Return the case files and manifest with coverage counts for the supplied probes. List any
+questions or reference answers that still need to be supplied for evaluation.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

@@ -1,30 +1,35 @@
 ---
 name: run-unlearn
-description: "预览、预检或执行已注册的机器遗忘计划，同时检查遗忘与保留效果。"
+description: "Preview, preflight, or execute an unlearning plan with explicit forget and retain sets and evaluate both scopes."
 ---
 
-# 运行机器遗忘
+# Run machine unlearning
 
-## 输入
+## Inputs
 
-operation=unlearning 的计划；forget/retain、初始 checkpoint、方法与预算。
+A plan with `operation=unlearning`, a starting checkpoint, method, separate forget and retain
+data, and an update budget.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
-python .claude/skills/run-unlearn/scripts/run.py --plan PLAN --output artifacts/TASK/unlearn_trace.json
+python .claude/skills/run-unlearn/scripts/run.py --plan PLAN \
+  --output artifacts/TASK/unlearn_trace.json
 ```
 
-1. 核对初始 checkpoint、forget/retain 角色、重叠情况以及方法损失和评价配置。
-2. 运行预览，追加 `--preflight` 检查同一配置；记录阻塞原因和 review_hash。
-3. 按[执行流程](../_shared/references/execution.md)在授权范围执行；输入变化后重新预检。
-4. 核查实际训练与遗忘/保持评价；区分数据缺失、评价未执行、低分与程序错误。
+1. Verify the starting checkpoint, the loss and evaluation settings, and the roles of the two
+   datasets. Check for overlapping forget and retain examples.
+2. Preview the plan, then add `--preflight` for the same selection. Inspect the method's
+   `review_hash` and any blockers.
+3. Follow the [model execution workflow](../_shared/references/execution.md) for the authorized
+   configuration. Repeat preflight if a dataset or other reviewed input changes.
+4. Inspect both forget efficacy and retained utility. Report the scope of each measurement and
+   distinguish a low score from missing data, a skipped evaluation, or a failed run.
 
-## 完成标准
+## Completion criteria
 
-- 交付轨迹、配置和实际遗忘/保留指标或明确缺失。
-- 回答质量降低不能证明知识完全删除；不把未测保持能力视为正常。
+Return the trace, configuration, and measured forget and retain results. Limit conclusions about
+forgetting to the behavior the probes tested, including when answer quality falls. Mark
+unmeasured outcomes as unavailable.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

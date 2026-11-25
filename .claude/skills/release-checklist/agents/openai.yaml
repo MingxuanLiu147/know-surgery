@@ -1,4 +1,4 @@
 interface:
-  display_name: "源码结构与发布检查"
-  short_description: "在分享或使用工作区前核对入口、配置、依赖及 Skills 结构；不上传发布。"
-  default_prompt: "使用 $release-checklist 按当前仓库接口完成我指定的源码结构与发布检查任务。"
+  display_name: "Check Release Readiness"
+  short_description: "Check the source layout, dependencies, and skill wrappers"
+  default_prompt: "Use $release-checklist to check this checkout and list the required components that are missing."

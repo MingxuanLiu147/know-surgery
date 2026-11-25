@@ -1,30 +1,32 @@
 ---
 name: setup-env
-description: "检查 Know-Surgery 的 Python、依赖、GPU 和本地模型缓存；用于运行前检查或环境排障。"
+description: "Inspect the Python environment, dependencies, visible GPUs, and local model caches before a Know-Surgery run or when diagnosing setup."
 ---
 
-# 环境检查
+# Check the runtime environment
 
-## 输入
+## Inputs
 
-仓库根目录；目标 Python 解释器；可选本地模型路径。
+The source checkout and the Python interpreter you intend to use. Supply local model or cache
+paths if they are known.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
 python .claude/skills/setup-env/scripts/run.py --output artifacts/TASK/environment.json
 ```
 
-1. 确认工作目录和 Python 解释器；后续命令使用同一个环境。
-2. 运行辅助脚本，必要时添加可重复的 `--model-cache PATH`。
-3. 阅读缺失依赖和 `gpu_query`；选择可用设备，核查本地模型配置、分片与 tokenizer 文件完整性。无 GPU 或 `nvidia-smi` 不妨碍配置规划。
-4. 仅在用户授权后安装依赖或下载权重；本脚本不安装、不下载。
+1. Run the command from the checkout root with the same interpreter you will use for subsequent
+   steps. Repeat `--model-cache PATH` to check more than one directory.
+2. Read the package import results and `gpu_query`. Configuration planning can proceed on a CPU
+   machine even when `nvidia-smi` is unavailable.
+3. For a model run, inspect the checkpoint configuration, weight shards, and tokenizer files in
+   the selected directory. The directory check only establishes that it exists. Install missing
+   packages or download assets within the user's authorized scope.
 
-## 完成标准
+## Completion criteria
 
-- 交付环境报告、解释器、可用设备与具体缺项。
-- 区分环境检查通过和目标模型/算法兼容；不泄露密钥。
+Return the environment report and identify the interpreter, available device, and any missing
+dependencies or assets for the requested run.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

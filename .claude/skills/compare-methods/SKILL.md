@@ -1,31 +1,37 @@
 ---
 name: compare-methods
-description: "比较 Know-Surgery 已有运行的指标与实验条件；用于方法对照、检查模型或数据是否一致，以及判断结果能否公平比较。"
+description: "Compare recorded metrics and experimental conditions from existing runs to determine whether the evidence supports a method comparison."
 ---
 
-# 比较方法与实验条件
+# Compare methods across runs
 
-## 输入
+## Inputs
 
-至少两个运行目录。输入是目录，不是 aggregate.json。
+At least two run directories, each containing its own configuration and evaluation outputs. Pass
+the directories as positional arguments.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
-python .claude/skills/compare-methods/scripts/run.py RUN_A RUN_B --output artifacts/TASK/comparison.json
+python .claude/skills/compare-methods/scripts/run.py RUN_A RUN_B \
+  --output artifacts/TASK/comparison.json
 ```
 
-1. 查看各运行的配置、轨迹和评价文件，明确比较目标效果、副作用或成本。
-2. 运行比较命令，检查 `fairness`、`metric_alignment` 和 `comparable`；区分证据缺失（`known=false`）与已知条件不一致。
-3. 另外读取 `resolved_config.yaml` 核查样本范围、更新步数和有效 batch；这些预算不由比较器完整保证。
-4. 核对指标分母、方向及评分协议；比较耗时还需相同硬件和工作量。
-5. 证据充分才给出有范围的结论；否则列出具体差异或待补信息。脚本输出比较数据，解释和作图由 Agent 完成。
+1. Identify the target of the comparison, such as edit success, locality, or runtime. Inspect
+   the saved traces and evaluation files.
+2. Read `fairness`, `metric_alignment`, and `comparable` in the comparison JSON. Distinguish a
+   missing identity field (`known=false`) from an observed difference.
+3. Open each `resolved_config.yaml` and compare the sample scope, update steps, and effective
+   batch size. Training budgets can differ even when `comparable` is `true`.
+4. Check the denominator, direction, and scoring protocol for each metric. Timing comparisons
+   also require matching hardware and workloads.
+5. Explain which comparisons the evidence supports and identify the field or file behind each
+   mismatch. Use the comparison data for a plot or ranking only when the requested comparison is
+   justified.
 
-## 完成标准
+## Completion criteria
 
-- 交付比较 JSON、具体差异及来源，说明哪些指标可比较。
-- 不因文件夹同名或单个布尔值就断言公平，不把缺失条件补为相同。
+Return the comparison JSON and a brief conclusion for each metric of interest. List any
+conditions that differed or could not be verified.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

@@ -1,4 +1,4 @@
 interface:
-  display_name: "仓库能力盘点"
-  short_description: "选择或扩展知识更新工作流前，盘点模型、数据集、Trainer、配方和 Skills。"
-  default_prompt: "使用 $inspect-repo 按当前仓库接口完成我指定的仓库能力盘点任务。"
+  display_name: "Inspect Repository"
+  short_description: "Find registered components and matching recipes"
+  default_prompt: "Use $inspect-repo to find the registered models and recipes for a CounterFact edit."

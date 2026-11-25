@@ -1,4 +1,4 @@
 interface:
-  display_name: "接入模型配置"
-  short_description: "接入或校验本地/Hugging Face 模型，使其可被 Know-Surgery 公共配置选择。"
-  default_prompt: "使用 $add-model 按当前仓库接口完成我指定的接入模型配置任务。"
+  display_name: "Add a Model"
+  short_description: "Register a model and check its configuration"
+  default_prompt: "Use $add-model to configure my local checkpoint and check that my chosen editing method can use it."

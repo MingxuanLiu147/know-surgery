@@ -1,4 +1,4 @@
 interface:
-  display_name: "恢复历史实验命令"
-  short_description: "恢复已有运行的命令和配置；用于检查可复现性或在授权范围内重跑。"
-  default_prompt: "使用 $reproduce-run 按当前仓库接口完成我指定的恢复历史实验命令任务。"
+  display_name: "Reproduce a Run"
+  short_description: "Recover a saved command and its configuration"
+  default_prompt: "Use $reproduce-run to recover the command for this run and check which inputs I need to repeat it."

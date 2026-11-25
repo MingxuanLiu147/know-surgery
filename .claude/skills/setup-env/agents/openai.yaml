@@ -1,4 +1,4 @@
 interface:
-  display_name: "环境检查"
-  short_description: "检查 Know-Surgery 的 Python、依赖、GPU 和本地模型缓存；用于运行前检查或环境排障。"
-  default_prompt: "使用 $setup-env 按当前仓库接口完成我指定的环境检查任务。"
+  display_name: "Check Environment"
+  short_description: "Inspect Python, GPUs, dependencies, and model caches"
+  default_prompt: "Use $setup-env to check whether this environment has the dependencies and local model files for my run."

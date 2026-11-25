@@ -1,21 +1,38 @@
-# 公共模型执行流程
+# Preview, preflight, and run a model
 
-适用于 `run-inject`、`run-edit`、`run-unlearn`、`smoke-test` 及需要重跑的扩展任务。
+Use this procedure for `run-edit`, `run-inject`, `run-unlearn`, `smoke-test`, and any authorized
+rerun.
 
-## 1. 核对与预览
+## Preview the plan
 
-确定 operation、modality、已注册模型/数据/方法、实际输入、checkpoint、设备及预算。优先复用配方，记录偏离默认的参数与原因。运行对应 Skill 的 `--plan PLAN` 预览命令，核查组合出的配置；预览不加载模型进行更新。
+Confirm the operation, modality, registered model and method, input files, checkpoint, device,
+and budget. Reuse a matching recipe and record any overrides. Run the chosen skill with
+`--plan PLAN` to inspect the composed configuration. Use the same method selection in the
+following steps.
 
-## 2. 预检
+## Check prerequisites
 
-在完全相同的计划、方法、数据和参数选择上追加 `--preflight`。检查真实前置条件、评价配置、阻塞原因及各方法 `review_hash`。有阻塞则停止正式执行，报告缺项；不要绕过预检或伪造资产。
+Add `--preflight` to the preview command. Read the report for each selected method, including
+input identities, method parameters, evaluation settings, and `review_hash`. Resolve any
+reported blockers before execution.
 
-## 3. 审查与执行
+## Execute the reviewed configuration
 
-仅在用户明确批准当前实际配置与输入后执行。已有明确、覆盖本配置的授权无需重复询问；不能把未经审查的 hash 自动当成同意。使用对应 Skill 的同一选择追加 `--execute --reviewed-config METHOD=HASH`；按实际 `--help` 为多方法提供所需的各方法确认参数。必要时指定 `--cuda` 和 `--timeout`。主 CLI 的执行参数与 Skill 包装器有所不同，按实际入口的帮助及预检输出使用。
+Once the user's authorization covers the reviewed configuration and inputs, replace
+`--preflight` with `--execute --reviewed-config METHOD=HASH` on the skill wrapper. Substitute
+the method ID and its `review_hash`. Repeat `--reviewed-config` for each selected method.
+`--cuda` and `--timeout` are optional. For direct invocation of `know-surgery` or
+`python src/surgery.py`, pass `--reviewed-config HASH` with the same Hydra overrides.
 
-任何影响配置、模型、辅助资产或输入的变化均须重新预检；冒烟和全量运行的审查不能互换。默认 `smoke-test` 限制最多2条案例，注入/遗忘为1步；不同预算通过公共正常入口执行并重新审查。
+The hash identifies what was reviewed. Check authorization separately and reuse it when it
+already covers the run. Repeat preflight after changing the configuration, model, method assets,
+or inputs. Review a smoke run at its own budget. The helper caps the case budget at two and sets
+`trainer.args.max_steps=1` for injection and unlearning. Use the operation's run skill for
+another budget.
 
-## 4. 验证与报告
+## Verify the outcome
 
-检查实际进程退出状态、输入清单、解析配置、命令、轨迹、实际样本/步数及结果文件。训练成功与评价完整是不同状态。对目标效果、泛化、副作用或保留效用按实际适用协议分别报告；缺失值标为 null/N/A。不得把配置成功或冒烟成功当作完整基准结果。
+Inspect the exit status, command, resolved configuration, input manifest, trace, and result
+files. Check the actual sample and step counts. Verify that evaluation ran, then report the
+measured target effect, generalization, locality, or retained utility under the applicable
+protocol. Mark missing values as `null` or N/A and identify the scope of the evidence.

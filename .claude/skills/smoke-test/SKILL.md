@@ -1,30 +1,35 @@
 ---
 name: smoke-test
-description: "验证已规划的操作能否组合配置并可选执行极小规模模型任务；用于扩大实验前。"
+description: "Check a plan's resolved configuration and optionally run a few cases to verify model loading and output creation before a larger run."
 ---
 
-# 最小冒烟验证
+# Smoke-test a plan
 
-## 输入
+## Inputs
 
-合法 plan、选定方法、本地输入和受限运行授权（如执行）。
+A valid plan, selected method, local inputs, and an authorized budget for any model execution.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
-python .claude/skills/smoke-test/scripts/run.py --plan PLAN --output artifacts/TASK/smoke_trace.json
+python .claude/skills/smoke-test/scripts/run.py --plan PLAN \
+  --output artifacts/TASK/smoke_trace.json
 ```
 
-1. 使用独立输出路径；当前 helper 限制最多2条案例，注入/遗忘限制1个训练步。
-2. 运行预览并追加 `--preflight` 检查实际有界配置；完整计划的 hash 不可用于另一份冒烟配置。
-3. 按[执行流程](../_shared/references/execution.md)使用对应方法 hash 执行；需要2步等不同预算时走受限正常 CLI/运行入口。
-4. 检查真实样本数、步数、模型加载、产物及失败原因，标明验证覆盖范围。
+1. Choose a separate output directory for the model run and a path for the trace. The helper
+   caps the case budget at two and sets `trainer.args.max_steps=1` for injection and unlearning.
+   Editing uses the selected editor's method settings.
+2. Preview and preflight this bounded configuration with the same method. Use its own
+   `review_hash` for the [model execution workflow](../_shared/references/execution.md).
+3. If an injection or unlearning check needs a different update budget, set that budget on the
+   corresponding run skill and preflight it there.
+4. Inspect the actual case and step counts, model loading, generated files, and any errors. Use
+   `configured` for a composed preview and `verified_smoke` only when the real run produced the
+   expected evidence.
 
-## 完成标准
+## Completion criteria
 
-- 交付轨迹与验证证据；配置组合标 `configured`，真实有界验证按证据标 `verified_smoke`。
-- 不将冒烟运行报告为完整基准结果，不启动整个实验矩阵。
+Return the trace, the cases or steps actually checked, and the files or error that establish the
+outcome.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

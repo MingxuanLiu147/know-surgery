@@ -1,30 +1,34 @@
 ---
 name: normalize-knowledge
-description: "将自定义 JSON、JSONL、CSV 或 TXT 规范化为指定操作的知识记录；用于数据接入前。"
+description: "Convert JSON, JSONL, CSV, or TXT into records for a specific operation before importing data or building cases."
 ---
 
-# 知识数据规范化
+# Normalize knowledge records
 
-## 输入
+## Inputs
 
-原始文件、operation、知识类型与角色；原始目标答案及来源信息。
+The source file, operation, and any known knowledge type or role. Use the targets and provenance
+supplied with the records.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
-python .claude/skills/normalize-knowledge/scripts/run.py --input INPUT --operation edit --knowledge-type fact --output artifacts/TASK/normalized.jsonl
+python .claude/skills/normalize-knowledge/scripts/run.py --input INPUT --operation edit --knowledge-type fact \
+  --output artifacts/TASK/normalized.jsonl
 ```
 
-1. 先查看输入记录和目标数据契约；保留原文件。
-2. 执行规范化；注入使用 train，编辑使用 edit；遗忘保留 `dataset_role`，或分别提供 `--role forget` / `--role retain`。
-3. 检查 JSONL 及对应 `.rejected.json`、`.manifest.json`；非零退出或空输入时定位错误。
-4. 保持 ID、来源、时间、条件和已有探针；TXT 仅按空行分段，不自动抽取缺失问答。
+1. Inspect the source fields and select the operation. Injection uses the `train` role and
+   editing uses `edit`. For unlearning, preserve each record's `dataset_role` or pass
+   `--role forget` and `--role retain` on separate inputs.
+2. Read the accepted JSONL, `.rejected.json`, and `.manifest.json`. Check the counts and
+   rejection reasons, including empty input.
+3. Verify that supplied IDs, source details, timestamps, conditions, and probes survive
+   conversion. TXT input splits on blank lines. Resolve missing questions or targets from the
+   source.
 
-## 完成标准
+## Completion criteria
 
-- 交付规范化文件及接受/拒绝统计和来源清单。
-- 缺失值明确报告；不得编造答案或覆盖原始数据。
+Return the normalized records, source manifest, and accepted and rejected counts. Report
+unresolved fields so the user can correct the input.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

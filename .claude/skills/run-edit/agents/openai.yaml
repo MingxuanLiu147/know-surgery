@@ -1,4 +1,4 @@
 interface:
-  display_name: "运行知识编辑"
-  short_description: "预览、预检或执行已注册的知识编辑计划；检查目标编辑及副作用。"
-  default_prompt: "使用 $run-edit 按当前仓库接口完成我指定的运行知识编辑任务。"
+  display_name: "Run a Knowledge Edit"
+  short_description: "Preview and evaluate a registered editing plan"
+  default_prompt: "Use $run-edit to preview my editing plan and check the data for evaluating reliability and locality."

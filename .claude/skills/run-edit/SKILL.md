@@ -1,30 +1,34 @@
 ---
 name: run-edit
-description: "预览、预检或执行已注册的知识编辑计划；检查目标编辑及副作用。"
+description: "Preview, preflight, or execute a registered editing plan and check its effect on the target, paraphrases, and unrelated knowledge."
 ---
 
-# 运行知识编辑
+# Run a knowledge edit
 
-## 输入
+## Inputs
 
-operation=edit 的计划；模型、方法、数据、资源和预算。
+A plan with `operation=edit`, its model and method, the cases, and the device and budget for
+execution.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
 python .claude/skills/run-edit/scripts/run.py --plan PLAN --output artifacts/TASK/edit_trace.json
 ```
 
-1. 核对编辑案例、模型及方法；检查层映射、统计量、辅助 checkpoint 等方法前置资产。
-2. 运行预览，再对同一选择追加 `--preflight`；读取阻塞原因及 review_hash。
-3. 按[执行流程](../_shared/references/execution.md)执行；存在阻塞则停止并解释缺项，不擅自改算法。
-4. 核查实际完成案例、预测和评测结果；按可用协议报告 Reliability、Generalization、Locality 及其他指标。
+1. Check the case count and targets. Verify the method's layer mapping, statistics, and
+   auxiliary checkpoints against the chosen model.
+2. Preview the plan. Add `--method ID` to select one method from a multi-method plan. Run the
+   same selection with `--preflight` and inspect the errors and `review_hash` for that method.
+3. Follow the [model execution workflow](../_shared/references/execution.md) for an authorized
+   run. Report missing prerequisites against the method the user selected.
+4. Inspect the completed cases, predictions, and evaluation outputs. Report reliability on the
+   original prompts, generalization on paraphrases, and locality on unrelated probes where the
+   data and scoring protocol support them.
 
-## 完成标准
+## Completion criteria
 
-- 交付轨迹、配置、实际产物及明确的阻塞/运行状态。
-- 不以进程退出码代替编辑成功；不编造未测指标。
+Return the configuration, trace, and outputs for the completed cases, or the specific blocker.
+Mark unmeasured dimensions as unavailable.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)
