@@ -1,30 +1,34 @@
 ---
 name: add-dataset
-description: "将自定义数据集接入现有数据契约、配置和公共 CLI；支持复用已有适配器。"
+description: "Map a custom dataset to a supported data contract and register its configuration for use through the Know-Surgery CLI."
 ---
 
-# 接入数据集
+# Add a dataset
 
-## 输入
+## Inputs
 
-数据文件、operation、字段、来源/划分、目标加载与评测要求。
+The data file, source, version, split, fields, and intended operation. Identify which records or
+probes evaluation will need.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
-python .claude/skills/add-dataset/scripts/run.py --path CONFIG_YAML --output artifacts/TASK/dataset_validation.json
+python .claude/skills/add-dataset/scripts/run.py --path CONFIG_YAML \
+  --output artifacts/TASK/dataset_validation.json
 ```
 
-1. 查看 `src/data/`、`configs/data/datasets/` 与目标操作契约；语义匹配时复用现有 adapter（如 `Canonical_edit`）。
-2. 准备可被配置系统选择的数据集配置；仅在必要时新增 handler 和相应注册。
-3. 用辅助命令检查 YAML mapping；用实际加载器读取少量样本，核查目标、探针及角色。
-4. 组合公共 CLI 配置、预检，并在已授权范围完成小规模实际执行；保留原始文件、来源、版本和划分。
+1. Inspect `src/data/` and `configs/data/datasets/`. Reuse a handler when the records match its
+   schema. For example, `Canonical_edit` accepts prepared editing cases.
+2. Create or select the dataset YAML under `configs/data/datasets/`. Register a new handler only
+   if the existing ones cannot represent the records.
+3. Run the helper to validate the YAML mapping. Load a few records with the actual handler and
+   inspect targets, probes, and roles.
+4. Compose the public CLI configuration and run preflight. If a small model run was requested
+   and authorized, record its inputs, split, and results.
 
-## 完成标准
+## Completion criteria
 
-- 交付配置、加载验证和已请求的运行/评价证据。
-- 结构校验不等于注册、加载或运行成功；不另建训练框架。
+Return the selectable configuration, evidence from loading sample records, and any requested run
+or evaluation results. State which checks were completed.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

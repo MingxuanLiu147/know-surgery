@@ -1,4 +1,4 @@
 interface:
-  display_name: "知识更新任务规划"
-  short_description: "把知识注入、编辑、遗忘的自然语言需求转换为可审查的 SurgeryPlan；不直接运行模型。"
-  default_prompt: "使用 $plan-surgery 按当前仓库接口完成我指定的知识更新任务规划任务。"
+  display_name: "Plan a Knowledge Update"
+  short_description: "Turn a knowledge update request into a reviewable plan"
+  default_prompt: "Use $plan-surgery to plan one GPT-2 edit with FT on CounterFact and show the inputs and evaluation settings."

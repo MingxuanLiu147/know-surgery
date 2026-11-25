@@ -1,30 +1,30 @@
 ---
 name: inspect-repo
-description: "选择或扩展知识更新工作流前，盘点模型、数据集、Trainer、配方和 Skills。"
+description: "Find registered models, datasets, trainers, and recipes in a Know-Surgery checkout when selecting or extending a workflow."
 ---
 
-# 仓库能力盘点
+# Inspect the workbench
 
-## 输入
+## Inputs
 
-当前仓库源码；目标操作或待查组件。
+A source checkout and the operation or component you want to investigate.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
 python .claude/skills/inspect-repo/scripts/run.py --output artifacts/TASK/inventory.json
 ```
 
-1. 执行盘点命令，获取已注册组件 ID 和配方。
-2. 按 operation、modality、model、dataset、method 筛选相关条目。
-3. 读取匹配的 `configs/` 和实现，核对方法资产、配置约束及已有证据。
-4. 有精确配方时优先复用；没有时明确适配缺口，不猜测组件 ID。
+1. Read `registry` for model, dataset, and trainer IDs. Read `recipes` for combinations the
+   workbench already describes.
+2. Match the operation, model, dataset, and method to the task. Inspect the corresponding YAML
+   and handler to confirm modality, required assets, and restrictions.
+3. Use a matching recipe when available. If none covers the requested combination, identify what
+   needs to be composed or adapted.
 
-## 完成标准
+## Completion criteria
 
-- 交付清单及可复用组件、限制。
-- 注册或存在配置不等于已成功运行；盘点不修改源码或运行产物。
+Return the inventory and the IDs or recipe that fit the task. Describe configuration coverage
+separately from any evidence of a completed run.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

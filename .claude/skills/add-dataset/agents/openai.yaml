@@ -1,4 +1,4 @@
 interface:
-  display_name: "接入数据集"
-  short_description: "将自定义数据集接入现有数据契约、配置和公共 CLI；支持复用已有适配器。"
-  default_prompt: "使用 $add-dataset 按当前仓库接口完成我指定的接入数据集任务。"
+  display_name: "Add a Dataset"
+  short_description: "Map local records to a registered dataset configuration"
+  default_prompt: "Use $add-dataset to register my JSONL file for editing and verify that the dataset handler reads its targets and locality probes."

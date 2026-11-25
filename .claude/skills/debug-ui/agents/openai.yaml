@@ -1,4 +1,4 @@
 interface:
-  display_name: "检查 WebUI 后端与行为"
-  short_description: "检查 Know-Surgery 后端健康状态；用于定位 UI 问题并按需验证界面与 CLI 一致性。"
-  default_prompt: "使用 $debug-ui 按当前仓库接口完成我指定的检查 WebUI 后端与行为任务。"
+  display_name: "Check WebUI Health"
+  short_description: "Check backend health and reproduce a WebUI issue"
+  default_prompt: "Use $debug-ui to check my local backend and compare the command exported by the workbench with the CLI preview."

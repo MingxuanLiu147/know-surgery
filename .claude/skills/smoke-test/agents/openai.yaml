@@ -1,4 +1,4 @@
 interface:
-  display_name: "最小冒烟验证"
-  short_description: "验证已规划的操作能否组合配置并可选执行极小规模模型任务；用于扩大实验前。"
-  default_prompt: "使用 $smoke-test 按当前仓库接口完成我指定的最小冒烟验证任务。"
+  display_name: "Smoke-Test a Plan"
+  short_description: "Verify a plan on a small, bounded set of cases"
+  default_prompt: "Use $smoke-test to preview a two-case check for my plan and show the bounded settings."

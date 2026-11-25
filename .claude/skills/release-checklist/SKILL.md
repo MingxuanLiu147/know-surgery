@@ -1,30 +1,33 @@
 ---
 name: release-checklist
-description: "在分享或使用工作区前核对入口、配置、依赖及 Skills 结构；不上传发布。"
+description: "Check entrypoints, configuration, installed dependencies, and skill wrappers before using or sharing a Know-Surgery checkout."
 ---
 
-# 源码结构与发布检查
+# Check a source checkout
 
-## 输入
+## Inputs
 
-当前工作区和 Python 环境；拟发布范围。
+The source checkout, its Python environment, and the components intended for use or
+distribution.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
 python .claude/skills/release-checklist/scripts/run.py --output artifacts/TASK/checklist.json
 ```
 
-1. 运行结构与依赖检查，检查必要文件、许可证、配置及包装入口。
-2. 区分必需检查和可选 UI/Codex 发现组件；记录具体失败和依赖缺项。
-3. 对目标工作流另外执行环境检查、配置预检与已授权的冒烟测试。
-4. 检查待分享产物中的许可证、私人信息、模型/数据权限及不应提交的文件。
+1. Read the checklist for entrypoints, registered configurations, dependency discovery, license
+   files, and skill wrappers.
+2. Record failed required checks separately from optional components such as the WebUI and Codex
+   discovery link.
+3. For the intended workflow, check the environment and preflight the selected recipe. Record a
+   bounded model run if that validation is authorized.
+4. Before sharing files, review the applicable licenses, model and data permissions, and any
+   private inputs or artifacts.
 
-## 完成标准
+## Completion criteria
 
-- 交付检查清单、失败项与尚未验证的范围。
-- 检查通过不代表基准质量、模型兼容性或许可证获得认证；不自动发布。
+Return the structural checklist with any failed checks and state which compatibility,
+evaluation, or licensing questions still need evidence.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

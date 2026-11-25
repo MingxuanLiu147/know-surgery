@@ -1,30 +1,32 @@
 ---
 name: add-multimodal-case
-description: "为多模态知识更新检查本地 JSON/JSONL 引用图片，并准备相应模型输入。"
+description: "Check the local images referenced by JSON or JSONL cases, then prepare their text targets and probes for a multimodal operation."
 ---
 
-# 校验多模态案例
+# Validate image-text cases
 
-## 输入
+## Inputs
 
-JSON/JSONL、图片、目标文本、目标模型/processor。
+A JSON or JSONL file, its images and text targets, and the intended model and processor.
 
-## 流程
-
-在仓库根目录运行（占位符替换为真实值）：
+## Workflow
 
 ```bash
-python .claude/skills/add-multimodal-case/scripts/run.py --input INPUT --output artifacts/TASK/mm_validation.json
+python .claude/skills/add-multimodal-case/scripts/run.py --input INPUT \
+  --output artifacts/TASK/mm_validation.json
 ```
 
-1. 检查每条记录的 `image` 或 `images`，路径为绝对路径或相对于输入文件。
-2. 执行图片校验；读取缺失文件、解码失败或空输入的诊断。
-3. 另外核查 prompt、target、图文语义、processor 与模型方法兼容性；图片解码不证明语义一致。
-4. 准备实际视觉有效性与文本保持探针，组合并预检目标多模态配置。
+1. Inspect `image` or `images` in each record. Image paths can be absolute or relative to the
+   directory containing the input file.
+2. Run the image check and inspect diagnostics for empty input, missing files, and decoding
+   failures.
+3. Review the prompt and target against the image, then check processor and method
+   compatibility. Prepare visual efficacy and text preservation probes and preflight the chosen
+   multimodal configuration.
 
-## 完成标准
+## Completion criteria
 
-- 交付校验报告、可用图片清单和未解决项。
-- 不声称脚本自动注册案例、判断图文语义或运行模型；不公开私人图片。
+Return the validation report, identify usable images and remaining issues, and specify any model
+or semantic checks performed separately. Keep private images out of shared reports.
 
-遵循[公共工作约定](../_shared/references/workflow.md)。
+[Shared workflow conventions](../_shared/references/workflow.md)

@@ -1,4 +1,4 @@
 interface:
-  display_name: "运行机器遗忘"
-  short_description: "预览、预检或执行已注册的机器遗忘计划，同时检查遗忘与保留效果。"
-  default_prompt: "使用 $run-unlearn 按当前仓库接口完成我指定的运行机器遗忘任务。"
+  display_name: "Run Machine Unlearning"
+  short_description: "Preview unlearning and assess forget and retain sets"
+  default_prompt: "Use $run-unlearn to review my forget and retain sets and preview the unlearning plan."

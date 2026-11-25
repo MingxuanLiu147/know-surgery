@@ -1,4 +1,4 @@
 interface:
-  display_name: "知识数据规范化"
-  short_description: "将自定义 JSON、JSONL、CSV 或 TXT 规范化为指定操作的知识记录；用于数据接入前。"
-  default_prompt: "使用 $normalize-knowledge 按当前仓库接口完成我指定的知识数据规范化任务。"
+  display_name: "Normalize Knowledge Records"
+  short_description: "Prepare operation-specific records and track rejected rows"
+  default_prompt: "Use $normalize-knowledge to prepare my JSONL records for editing and show any rejected rows."
